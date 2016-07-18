@@ -14,3 +14,14 @@ script: tox
 
 after_success:
   - codecov
+
+deploy:
+  provider: pypi
+  distributions: sdist bdist_wheel
+  user: redapple
+  password:
+    secure: KRkrL050dlSjgeuGW/i78rCM6Tj7QAfQq527Tvz2toixEnKtlEFH6PKfW0aQe5V5rkpVraII2xWFhP7/aAUeswbFck+32DVxYaKdk7yXIM85C/kqAK8HbPLI6ZallfsfvoUms4KWAWfLb9mRxSAy5frrbkQFsR0OirxAqA4YkQxMX5vTn91M1yylZBt4KPZLJxoF2oTL0kfWsXhMFNnWml1p8Zr3xJ/AKnqyYNL8fnG73xdiiaS73Lm88UDuheNZ5Y2NaLNguaDvD0qv1F/iywG1IktAsfsYVCRf53AbBVSs+oiLO1JfaaKaPeNeJLSHNFn3iok0888/EZVZTstWXn+4MO0julQv3q7XasncWPM8EoFitEX82o1zPs5ycI+0Cyf7ml/YA+2y4OGgjcuI3ymY5PRZLS7dVgsZU3K5UuvyjjCiWV8m/HyK6BVEsQgysvkJH/U1wKf5ZCvgdjIZ/PHltXT7yzKc/M2L5GMe6gIzg76G88zJHKuHYzZC1xjeb3tRFoYHkMzt1lc3qHfRpKvFScylmoE8c6T2a1hEWU96GaLiKxTW5NYRq7IjsxfvfaIMTlvyQS3C/HNDUNcsVTPMIVPb6jibED/lyfRwPfrwd5SRsp4nyTC0nyJVhm+ir+gIDN2jVoR+XbXYkvEisicOmhqfHlQcfXBHKaiurvk=
+  on:
+    tags: true
+    repo: scrapy-plugins/scrapy-splitvariants
+    condition: $TOXENV = py35
