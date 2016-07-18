@@ -1,1 +1,1 @@
-scrapy
+scrapy>=1.0
