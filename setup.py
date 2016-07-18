@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='scrapy-splitvariants',
-    version='0.1.0',
+    version='1.0.0',
     license='BSD',
     description='Scrapy spider middleware to split an item into multiple items on a multi-valued key',
     author='Scrapinghub',
