@@ -13,7 +13,7 @@ class SplitVariantsMiddleware(object):
 
     def process_spider_output(self, response, result, spider):
         for r in result:
-            if isinstance(r, DictItem) and "variants" in r:
+            if isinstance(r, (DictItem, dict)) and "variants" in r:
                 variants = r.pop("variants")
                 for variant in variants:
                     new_product = deepcopy(r)
