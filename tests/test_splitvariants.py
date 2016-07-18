@@ -44,11 +44,10 @@ class SplitVariantsTest(TestCase):
                 "variants": [{"size": "XL", "price": 200},
                              {"size": "L", "price": 220}]}
 
-
         # Define how split items should look
         expected = [
-            {"id": 12, "name": "Big chair", "size": 'XL', 'price': 200},
-            {"id": 12, "name": "Big chair", "size": 'L', 'price': 220}]
+            {"id": 12, "name": "Big chair", "size": "XL", "price": 200},
+            {"id": 12, "name": "Big chair", "size": "L", "price": 220}]
 
         # Calling middleware for given result as a Scrapy Item()
         result = [TestItem(item)]
@@ -56,8 +55,51 @@ class SplitVariantsTest(TestCase):
                                              self.spider)
         self.assertEquals(list(result), expected)
 
+
+    def test_variants_dict_split(self):
+        """
+        Checks if dict with "variants" is split as expected
+        """
+        settings = {"SPLITVARIANTS_ENABLED": True}
+        crawler = get_crawler(settings_dict=settings)
+        mware = SplitVariantsMiddleware.from_crawler(crawler)
+
+        # Define item with variants
+        item = {"id": 12,
+                "name": "Big chair",
+                "variants": [{"size": "XL", "price": 200},
+                             {"size": "L", "price": 220}]}
+
+
+        # Define how split items should look
+        expected = [
+            {"id": 12, "name": "Big chair", "size": "XL", "price": 200},
+            {"id": 12, "name": "Big chair", "size": "L", "price": 220}]
+
         # Calling middleware for given result as a Python dict
         result = [item]
         result = mware.process_spider_output(self.response, result,
                                              self.spider)
+        self.assertEquals(list(result), expected)
+
+
+    def test_untouched(self):
+        """
+        Checks if dict with "variants" is split as expected
+        """
+        settings = {"SPLITVARIANTS_ENABLED": True}
+        crawler = get_crawler(settings_dict=settings)
+        mware = SplitVariantsMiddleware.from_crawler(crawler)
+
+        # Define item with non-"variants" key
+        item = {"id": 12,
+                "name": "Big chair",
+                "options": [{"size": "XL", "price": 200},
+                            {"size": "L", "price": 220}]}
+
+        result = mware.process_spider_output(self.response, [item],
+                                             self.spider)
+
+        # item has no "variants" key, it should be left untouched
+        expected = [item]
         self.assertEquals(list(result), expected)
